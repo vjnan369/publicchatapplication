@@ -1,0 +1,30 @@
+<h1>Chats#room</h1>
+<script type="text/javascript">
+  $(function() {
+    var client = new Faye.Client('http://localhost:9292/faye');
+   var public_subscription = client.subscribe('/messages/public', function(data) {
+      $('<p></p>').html(data.username + ": " + data.msg).appendTo('#setit');
+    });
+    $('#new_message_form').submit(function(){
+      client.publish('/messages/public', {
+        username: '<%= session[:username] %>',
+        msg: $('#message').val()
+      });
+
+      $('#message').val('');
+      return false;
+    });
+  });
+</script>
+<div class="chat_container">
+  <div id="chat_room">
+    <p class="alert"> Welcome to the chat room <%= session[:username] %>! </p>
+    <p><%=link_to "destroy session",login_path, method: :destroy%></p>
+  </div>
+
+  <form id="new_message_form">
+    <input type="text" id="message" name="message">
+    <input type="submit" value="Send">
+  </form>
+  <p id="setit"></p>
+</div>
