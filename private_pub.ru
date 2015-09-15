@@ -1,5 +1,5 @@
 require "bundler/setup"
-require "yaml"
+require "YAML"
 require "faye"
 require "private_pub"
 
